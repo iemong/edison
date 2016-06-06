@@ -13,7 +13,7 @@ var io = require('socket.io').listen(server);
 server.listen(8000);
 
 // intel edison
-var myLed = new m.Gpio(13);
+var myLed = new m.Gpio(15);
 myLed.dir(m.DIR_OUT);
 var ledState = true;
 
