@@ -16,6 +16,6 @@
   },
   "devDependencies": {
     "serialport": "^4.0.6",
-    "socket.io": "^1.7.1",
+    "socket.io": "^1.7.1"
   }
 }
