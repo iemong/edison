@@ -39,7 +39,7 @@ var serialPath = u.getDevicePath(); //Default general purpose port "/dev/ttyMFD1
 
 
 //Serialport NodeJS module declared in package.json
-var SerialPort = require("serialport").SerialPort;
+var SerialPort = require("serialport");
 var serialPort = new SerialPort(serialPath, {
     baudrate: 38400
 });
