@@ -58,4 +58,5 @@ serialPort.on("open",function() {
       });
       setTimeout(SerialWriteFunc, 1000);
     }
+    SerialWriteFunc();
 });
