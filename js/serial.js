@@ -41,7 +41,7 @@ var serialPath = u.getDevicePath(); //Default general purpose port "/dev/ttyMFD1
 //Serialport NodeJS module declared in package.json
 var SerialPort = require("serialport").SerialPort;
 var serialPort = new SerialPort(serialPath, {
-    baudrate: 115200
+    baudrate: 38400
 });
 
 serialPort.on("open",function() {
@@ -50,8 +50,12 @@ serialPort.on("open",function() {
     serialPort.on("data", function(data) { //Read available data from serial port
         console.log("data received: " + data);
     });
-    serialPort.write("This is a test.\n", function(err, results) { //Write data
-        console.log("err " + err);
-        console.log("results " + results);
-    });
+
+    var SerialWriteFunc = function() {
+      serialPort.write(':780135' + 'X\r\n', function(err, results) { //Write data
+          console.log("err " + err);
+          console.log("results " + results);
+      });
+      setTimeout(SerialWriteFunc, 1000);
+    }
 });
