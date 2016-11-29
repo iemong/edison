@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  script(src='https://cdn.socket.io/socket.io-1.4.5.js')
+  script(src='https://beebotte.com/bbt.js')
+  script.
+    //variable
+    var bbt_MSG = "";
+    //socket.io function
+    var socket = io.connect('http://localhost:3000');
+    socket.on('start',function(data){
+      console.log(data);
+    });
+    //beebotte function
+    var bbt = new BBT('8e17ef8794a4326c23756af9bec2b9aa');
+    bbt.subscribe({
+      channel: 'ifttt',
+      resource: 'action',
+    }, function(msg){
+      bbt_MSG = msg;
+      console.log(bbt_MSG);
+      final_msg = msg.data;
+      socket.emit('send_c_to_s',{message:final_msg});
+    });
