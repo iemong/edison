@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.6.0/socket.io.min.js'></script>
+  <script src='https://beebotte.com/bbt.js' ></script>
+  <script>
+    var bbt = new BBT('8e17ef8794a4326c23756af9bec2b9aa');
+    bbt.subscribe({
+      channel: 'ifttt',
+      resource: 'action',
+    }, function(msg){
+      var bbt_MSG = msg;
+      console.log(bbt_MSG);
+      final_msg = msg.data;
+      socket.emit('send_c_to_s',{message:final_msg});
+    });
+  </script>
+</body>
+</html>

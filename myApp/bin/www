@@ -4,9 +4,10 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app   = require('../app');
 var debug = require('debug')('myapp:server');
-var http = require('http');
+var http  = require('http');
+var m     = require('mraa');
 
 /**
  * Get port from environment and store in Express.
@@ -21,7 +22,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 var io = require('socket.io')(server);
-var deviceFlag = false;
+
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -29,16 +30,28 @@ var deviceFlag = false;
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+
+//intel edison
+var ledState = false;
+var EdisonFunc = function(){
+  var myLed = new m.Gpio(14);
+  myLed.dir(m.DIR_OUT);
+  myLed.write(ledState?1:0);
+}
+
+//socket.IO
 io.on('connection', function (socket) {
   socket.emit('start', { massage: 'websocket started!!' });
   socket.on('send_c_to_s', function (data) {
     console.log(data);
     if(data.message == '1ds11176w@gmail.com') {
-      deviceFlag = true;
+      ledState = true;
+      EdisonFunc();
     } else {
-      deviceFlag = false;
+      ledState = false;
+      EdisonFunc();
     }
-    deviceFunc(deviceFlag);
   });
 });
 /**
@@ -99,13 +112,4 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-}
-
-//ここにシリアル通信を書く
-function deviceFunc(_flag) {
-  if(_flag) {
-    console.log("1");
-  } else {
-    console.log("0");
-  }
 }
