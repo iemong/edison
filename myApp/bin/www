@@ -53,6 +53,7 @@ function SerialWriteFunc (_num, _r, _g, _b) {
   _r = _r.toString(16);
   _g = _g.toString(16);
   _b = _b.toString(16);
+  console.log(_num, _r, _g, _b);
   serialPort.write(':7801'+ _num + _r + _g + _b + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
       console.log("err " + err);
