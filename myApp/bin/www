@@ -55,7 +55,6 @@ function SerialWriteFunc () {
       console.log("results " + results);
     }
   });
-  setTimeout(SerialWriteFunc, 1000);
 }
 
 var ledState = false;
