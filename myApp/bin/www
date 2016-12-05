@@ -49,10 +49,10 @@ serialPort.on("open",function() {
 });
 
 function SerialWriteFunc (_num, _r, _g, _b) {
-  _num = toStriing(16);
-  _r = toString(16);
-  _g = toString(16);
-  _b = toString(16);
+  _num = _num.toString(16);
+  _r = _r.toString(16);
+  _g = _g.toString(16);
+  _b = _b.toString(16);
   serialPort.write(':7801'+ _num + _r + _g + _b + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
       console.log("err " + err);
