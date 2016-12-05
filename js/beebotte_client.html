@@ -11,6 +11,10 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.6.0/socket.io.min.js'></script>
   <script src='https://beebotte.com/bbt.js' ></script>
   <script>
+    var socket = io.connect('http://localhost:8000');
+    socket.on('start',function(data){
+      console.log(data);
+    });
     var bbt = new BBT('8e17ef8794a4326c23756af9bec2b9aa');
     bbt.subscribe({
       channel: 'ifttt',

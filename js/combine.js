@@ -4,11 +4,11 @@ var server = http.createServer();
 var m = require('mraa');
 
 //variable
-let ledState = false;
+var ledState = false;
 
 // socket.io
 server.on('request', (req, res) => {
-  let stream = fs.createReadStream('beebotte_client.html');
+  var stream = fs.createReadStream('beebotte_client.html');
   res.writeHead(200, {'Content-Type': 'text/html'});
   stream.pipe(res);
 });
