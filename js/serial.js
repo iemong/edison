@@ -53,8 +53,10 @@ serialPort.on("open",function() {
 
     var SerialWriteFunc = function() {
       serialPort.write(':780135' + 'X\r\n', function(err, results) { //Write data
+        if(err !== null || results !== undefined) {
           console.log("err " + err);
           console.log("results " + results);
+        }
       });
       setTimeout(SerialWriteFunc, 1000);
     }
