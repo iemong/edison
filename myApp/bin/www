@@ -49,7 +49,10 @@ serialPort.on("open",function() {
 });
 
 function SerialWriteFunc (_num, _r, _g, _b) {
-
+  _num = toStriing(16);
+  _r = toString(16);
+  _g = toString(16);
+  _b = toString(16);
   serialPort.write(':7801'+ _num + _r + _g + _b + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
       console.log("err " + err);
@@ -60,7 +63,7 @@ function SerialWriteFunc (_num, _r, _g, _b) {
 
 var ledState = false;
 var EdisonFunc = function(){
-  SerialWriteFunc('01', 'AA', 'FF', 'DD');
+  SerialWriteFunc(1, 170, 255, 120);
   console.log("done");
 };
 
