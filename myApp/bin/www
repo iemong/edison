@@ -46,7 +46,6 @@ serialPort.on("open",function() {
     serialPort.on("data", function(data) { //Read available data from serial port
         console.log("data received: " + data);
     });
-    SerialWriteFunc();
 });
 
 function SerialWriteFunc () {
@@ -61,6 +60,7 @@ function SerialWriteFunc () {
 
 var ledState = false;
 var EdisonFunc = function(){
+  SerialWriteFunc();
   console.log("done");
 };
 
