@@ -32,10 +32,8 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-
 //counter
 var second = 3;
-
 //intel edison
 u = new mraa.Uart(0);
 var serialPath = u.getDevicePath();
@@ -68,12 +66,12 @@ function SerialWriteFunc (_num, _r, _g, _b) {
   });
 }
 var smokeState = false;
-var EdisonFunc = function(_second){
+var EdisonFunc = function(){
   if (smokeState) {
     SerialWriteFunc(1, 170, 255, 120);
-    window.setTimeout(function(){
+    setTimeout(function(){
       smokeState = false;
-    }, _second * 1000);
+    }, second * 1000);
   } else {
     SerialWriteFunc(0, 170, 255, 120);
   }
