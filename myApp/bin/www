@@ -34,7 +34,8 @@ server.on('listening', onListening);
 
 //counter
 var second = 10;
-//intel edison
+
+//serial communication by intel edison
 u = new mraa.Uart(0);
 var serialPath = u.getDevicePath();
 var SerialPort = require("serialport");
@@ -44,9 +45,6 @@ var serialPort = new SerialPort(serialPath, {
 serialPort.on("open",function() {
     console.log("open");
     console.log("Connected to "+serialPath);
-    serialPort.on("data", function(data) { //Read available data from serial port
-        console.log("data received: " + data);
-    });
 });
 
 function SerialWriteFunc (_num, _r, _g, _b) {
@@ -58,6 +56,7 @@ function SerialWriteFunc (_num, _r, _g, _b) {
     list[i] = '0' + list[i];
     }
   }
+  // send sirial signal
   serialPort.write(':7801'+ list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
       console.log("err " + err);
@@ -65,6 +64,7 @@ function SerialWriteFunc (_num, _r, _g, _b) {
     }
   });
 }
+// edison
 var smokeState = false;
 var EdisonFunc = function(){
   if (smokeState) {
