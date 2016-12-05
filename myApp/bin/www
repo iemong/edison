@@ -49,12 +49,14 @@ serialPort.on("open",function() {
 });
 
 function SerialWriteFunc (_num, _r, _g, _b) {
-  _num = _num.toString(16);
-  _r = _r.toString(16);
-  _g = _g.toString(16);
-  _b = _b.toString(16);
-  console.log(_num, _r, _g, _b);
-  serialPort.write(':7801'+ _num + _r + _g + _b + 'X\r\n', function(err, results) { //Write data
+  var list = [_num, _r, _g, _b];
+  for (var i = 0; i < list.length; i++) {
+    list[i] = list[i].toString(16);
+    if(list[i].length == 1) {
+    list[i] = '0' + list[i];
+    }
+  }
+  serialPort.write(':7801'+ list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
       console.log("err " + err);
       console.log("results " + results);
