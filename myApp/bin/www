@@ -55,9 +55,7 @@ function SerialWriteFunc (_num, _r, _g, _b) {
     if(list[i].length == 1) {
     list[i] = '0' + list[i];
     }
-
   }
-  console.log(list);
   serialPort.write(':7801'+ list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
       console.log("err " + err);
@@ -65,10 +63,13 @@ function SerialWriteFunc (_num, _r, _g, _b) {
     }
   });
 }
-
-var ledState = false;
+var smokeState = false;
 var EdisonFunc = function(){
-  SerialWriteFunc(1, 170, 255, 120);
+  if (smokeState) {
+    SerialWriteFunc(1, 170, 255, 120);
+  } else {
+    SerialWriteFunc(0, 170, 255, 120);
+  }
 };
 
 //socket.IO
@@ -77,10 +78,11 @@ io.on('connection', function (socket) {
   socket.on('send_c_to_s', function (data) {
     console.log(data);
     if(data.message == '1ds11176w@gmail.com') {
-      ledState = true;
+      smokeState = true;
       EdisonFunc();
     } else {
-      ledState = false;
+      smokeState = false;
+      EdisonFunc();
     }
   });
 });
