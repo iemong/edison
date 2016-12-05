@@ -48,7 +48,7 @@ serialPort.on("open",function() {
     });
 });
 
-function SerialWriteFunc () {
+function SerialWriteFunc (_num, _r, _g, _b) {
 
   serialPort.write(':780101FFFFFF' + 'X\r\n', function(err, results) { //Write data
     if(err !== null || results !== undefined) {
@@ -60,7 +60,7 @@ function SerialWriteFunc () {
 
 var ledState = false;
 var EdisonFunc = function(){
-  SerialWriteFunc();
+  SerialWriteFunc('01', 'AA', 'FF', 'DD');
   console.log("done");
 };
 
