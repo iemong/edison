@@ -9,6 +9,7 @@ var debug = require('debug')('myapp:server');
 var http  = require('http');
 var m     = require('mraa');
 
+console.log('MRAA Version: ' + mraa.getVersion());
 /**
  * Get port from environment and store in Express.
  */
@@ -33,11 +34,31 @@ server.on('listening', onListening);
 
 
 //intel edison
+u = new mraa.Uart(0);
+var serialPath = u.getDevicePath();
+var SerialPort = require("serialport");
+var serialPort = new SerialPort(serialPath, {
+    baudrate: 38400
+});
+
 var ledState = false;
 var EdisonFunc = function(){
-  var myLed = new m.Gpio(14);
-  myLed.dir(m.DIR_OUT);
-  myLed.write(ledState?1:0);
+  serialPort.on("open",function() {
+      console.log("open");
+      console.log("Connected to "+serialPath);
+      serialPort.on("data", function(data) { //Read available data from serial port
+          console.log("data received: " + data);
+      });
+
+      var SerialWriteFunc = function() {
+        serialPort.write(':780135' + 'X\r\n', function(err, results) { //Write data
+            console.log("err " + err);
+            console.log("results " + results);
+        });
+        setTimeout(SerialWriteFunc, 1000);
+      }
+      SerialWriteFunc();
+  });
 }
 
 //socket.IO
