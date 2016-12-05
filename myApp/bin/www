@@ -33,7 +33,7 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 //counter
-var second = 3;
+var second = 10;
 //intel edison
 u = new mraa.Uart(0);
 var serialPath = u.getDevicePath();
