@@ -48,20 +48,20 @@ serialPort.on("open",function() {
 var ledState = false;
 var EdisonFunc = function(){
   serialPort.write(':780135' + 'X\r\n', function(err, results) { //Write data
-    if(err != null || results != undefined) {
+    if(err !== null || results !== undefined) {
       console.log("err " + err);
       console.log("results " + results);
     }
   });
   console.log("done");
-}
+};
 
 //socket.IO
 io.on('connection', function (socket) {
   socket.emit('start', { massage: 'websocket started!!' });
   socket.on('send_c_to_s', function (data) {
     console.log(data);
-    if(data == '1ds11176w@gmail.com') {
+    if(data.message == '1ds11176w@gmail.com') {
       ledState = true;
       EdisonFunc();
     } else {
