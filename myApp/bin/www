@@ -70,6 +70,7 @@ var EdisonFunc = function(){
   if (smokeState) {
     SerialWriteFunc(1, 170, 255, 120);
     setTimeout(function(){
+      SerialWriteFunc(0, 170, 255, 120);
       smokeState = false;
     }, second * 1000);
   } else {
