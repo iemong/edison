@@ -71,7 +71,7 @@ var smokeState = false;
 var EdisonFunc = function(_second){
   if (smokeState) {
     SerialWriteFunc(1, 170, 255, 120);
-    setTimeout(function(){
+    window.setTimeout(function(){
       smokeState = false;
     }, _second * 1000);
   } else {
