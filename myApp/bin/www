@@ -40,18 +40,18 @@ var SerialPort = require("serialport");
 var serialPort = new SerialPort(serialPath, {
     baudrate: 38400
 });
-serialPort.on("open",function() {
-    console.log("open");
-    console.log("Connected to "+serialPath);
-});
 
 var ledState = false;
 var EdisonFunc = function(){
-  serialPort.write(':780135' + 'X\r\n', function(err, results) { //Write data
-    if(err !== null || results !== undefined) {
-      console.log("err " + err);
-      console.log("results " + results);
-    }
+  serialPort.on("open",function() {
+      console.log("open");
+      console.log("Connected to "+serialPath);
+      serialPort.write(':780135' + 'X\r\n', function(err, results) { //Write data
+        if(err !== null || results !== undefined) {
+          console.log("err " + err);
+          console.log("results " + results);
+        }
+      });
   });
   console.log("done");
 };
