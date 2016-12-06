@@ -64,20 +64,21 @@ function SerialWriteFunc (_num, _r, _g, _b) {
     }
   });
 }
-// edison
+// arduino
 var smokeState = false;
-var EdisonFunc = function(){
+var arduinoFunc = function(){
   if (smokeState) {
     SerialWriteFunc(1, 170, 255, 120);
-    setTimeout(function(){
-      SerialWriteFunc(0, 170, 255, 120);
-      smokeState = false;
-    }, second * 1000);
+    // end point
+    setTimeout(arduinoFunc_stop, second * 1000);
   } else {
     SerialWriteFunc(0, 170, 255, 120);
   }
 };
-
+function arduinoFunc_stop() {
+  smokeState = false;
+  arduinoFunc();
+}
 //socket.IO
 io.on('connection', function (socket) {
   socket.emit('start', { massage: 'websocket started!!' });
@@ -85,11 +86,19 @@ io.on('connection', function (socket) {
     console.log(data);
     if(data.message == '1ds11176w@gmail.com') {
       smokeState = true;
-      EdisonFunc();
     } else {
       smokeState = false;
-      EdisonFunc();
     }
+    arduinoFunc();
+  });
+  socket.on('rgbInfo', function(){
+
+  });
+  socket.on('fogInfo', function(){
+
+  });
+  socket.on('timeInfo', function(){
+
   });
 });
 /**
