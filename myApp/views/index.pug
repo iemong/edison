@@ -10,7 +10,7 @@ block content
     //variable
     var bbt_MSG = "";
     //socket.io function
-    var socket = io.connect('localhost:3000');
+    var socket = io.connect('192.168.0.17:3000');
     socket.on('start',function(data){
       console.log(data);
     });
