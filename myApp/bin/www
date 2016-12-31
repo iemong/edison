@@ -54,7 +54,7 @@ function SerialWriteFunc(_num, _r, _g, _b, _device) {
     if (device == 'light') {
       childNum = '01';
     } else if (device == 'noroshi') {
-      childNum = '01';
+      childNum = '02';
     } else {
       childNum = '78';
     }
