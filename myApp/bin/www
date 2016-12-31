@@ -78,18 +78,20 @@ function SerialWriteFunc(_num, _r, _g, _b, _device) {
 var arduinoFunc = function (_judge) {
   if (_judge) {
     arduinoFunc_start();
-    console.log("start");
+
   } else {
     arduinoFunc_stop();
-    console.log("stop");
+
   }
 };
 var arduinoFunc_start = function () {
     SerialWriteFunc(1, 170, 255, 120, deviceName);
     setTimeout(arduinoFunc_stop, actionTimer * 1000);
+    console.log("start");
 };
 var arduinoFunc_stop = function () {
     SerialWriteFunc(0, 170, 255, 120, deviceName);
+    console.log("stop");
 };
 //socket.IO
 io.on('connection', function(socket) {
