@@ -54,7 +54,7 @@ function SerialWriteFunc(_num, _r, _g, _b, _device) {
     if (device == 'light') {
       childNum = '01';
     } else if (device == 'noroshi') {
-      childNum = '78';
+      childNum = '02';
     } else {
       childNum = '78';
     }
@@ -87,11 +87,9 @@ var arduinoFunc = function (_judge) {
 var arduinoFunc_start = function () {
     SerialWriteFunc(1, 170, 255, 120, deviceName);
     setTimeout(arduinoFunc_stop, actionTimer * 1000);
-    console.log("start");
 };
 var arduinoFunc_stop = function () {
     SerialWriteFunc(0, 170, 255, 120, deviceName);
-    console.log("stop");
 };
 //socket.IO
 io.on('connection', function(socket) {
