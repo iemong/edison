@@ -84,6 +84,7 @@ io.on('connection', function (socket) {
   socket.emit('start', { massage: 'websocket started!!' });
   socket.on('send_c_to_s', function (data) {
     console.log(data);
+    console.log(data.message.appli);
     if(data.message == '1ds11176w@gmail.com') {
       smokeState = true;
     } else {
