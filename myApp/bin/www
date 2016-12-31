@@ -47,8 +47,18 @@ serialPort.on("open", function() {
     console.log("Connected to " + serialPath);
 });
 
-function SerialWriteFunc(_num, _r, _g, _b) {
+function SerialWriteFunc(_num, _r, _g, _b, _device) {
     var list = [_num, _r, _g, _b];
+    var device = _device;
+    var childNum = '0';
+    if (device == 'light') {
+      childNum = '01';
+    } else if (device == 'noroshi') {
+      childNum = '02';
+    } else {
+      childNum = '78';
+    }
+    console.log(childNum);
     //convert num -> HEX
     for (var i = 0; i < list.length; i++) {
         list[i] = list[i].toString(16).toUpperCase();
@@ -57,7 +67,7 @@ function SerialWriteFunc(_num, _r, _g, _b) {
         }
     }
     // send sirial signal
-    serialPort.write(':7801' + list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
+    serialPort.write(':' + childNum + '01' + list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
         if (err !== null || results !== undefined) {
             console.log("err " + err);
             console.log("results " + results);
@@ -65,13 +75,21 @@ function SerialWriteFunc(_num, _r, _g, _b) {
     });
 }
 // arduino
-var arduinoFunc_start = function() {
-    SerialWriteFunc(1, 170, 255, 120);
+var arduinoFunc = function (_judge) {
+  if (_judge) {
+    arduinoFunc_start();
+    console.log("start");
+  } else {
+    arduinoFunc_stop();
+    console.log("stop");
+  }
+};
+var arduinoFunc_start = function () {
+    SerialWriteFunc(1, 170, 255, 120, deviceName);
     setTimeout(arduinoFunc_stop, actionTimer * 1000);
 };
 var arduinoFunc_stop = function () {
-    SerialWriteFunc(0, 170, 255, 120);
-    console.log('終わったバイ');
+    SerialWriteFunc(0, 170, 255, 120, deviceName);
 };
 //socket.IO
 io.on('connection', function(socket) {
@@ -85,10 +103,13 @@ io.on('connection', function(socket) {
         deviceAction = data.message.action;
         actionTimer = data.message.time;
         deviceOption = data.message.option;
+
         if (appliName == 'mail') {
             if (deviceOption == '1ds11176w@gmail.com') {
-                arduinoFunc_start();
+                arduinoFunc(deviceAction);
             }
+        } else {
+          arduinoFunc(deviceAction);
         }
     });
     socket.on('rgbInfo', function() {
