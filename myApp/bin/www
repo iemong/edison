@@ -32,8 +32,8 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-//counter
-var second = 10;
+//IFTTT variable
+var appliName, deviceName, deviceAction, actionTimer, deviceOption;
 
 //serial communication by intel edison
 u = new mraa.Uart(0);
@@ -70,7 +70,7 @@ var arduinoFunc = function(){
   if (smokeState) {
     SerialWriteFunc(1, 170, 255, 120);
     // end point
-    setTimeout(arduinoFunc_stop, second * 1000);
+    setTimeout(arduinoFunc_stop, actionTimer * 1000);
   } else {
     SerialWriteFunc(0, 170, 255, 120);
   }
@@ -84,12 +84,20 @@ io.on('connection', function (socket) {
   socket.emit('start', { massage: 'websocket started!!' });
   socket.on('send_c_to_s', function (data) {
     console.log(data);
-    console.log(data.message.appli);
-    if(data.message == '1ds11176w@gmail.com') {
-      smokeState = true;
-    } else {
-      smokeState = false;
+    appliName    = data.message.appli;
+    deviceName   = data.message.device;
+    deviceAction = data.message.action;
+    actionTimer  = data.message.time;
+    deviceOption = data.message.option;
+    if (appliName == 'mail') {
+      if(deviceOption == '1ds11176w@gmail.com') {
+        smokeState = true;
+        console.log('true');
+      } else {
+        smokeState = false;
+      }
     }
+
     arduinoFunc();
   });
   socket.on('rgbInfo', function(){
