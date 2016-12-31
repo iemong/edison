@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-var app   = require('../app');
+var app = require('../app');
 var debug = require('debug')('myapp:server');
-var http  = require('http');
-var mraa  = require('mraa');
+var http = require('http');
+var mraa = require('mraa');
 
 console.log('MRAA Version: ' + mraa.getVersion());
 /**
@@ -42,92 +42,83 @@ var SerialPort = require("serialport");
 var serialPort = new SerialPort(serialPath, {
     baudrate: 38400
 });
-serialPort.on("open",function() {
+serialPort.on("open", function() {
     console.log("open");
-    console.log("Connected to "+serialPath);
+    console.log("Connected to " + serialPath);
 });
 
-function SerialWriteFunc (_num, _r, _g, _b) {
-  var list = [_num, _r, _g, _b];
-  //convert num -> HEX
-  for (var i = 0; i < list.length; i++) {
-    list[i] = list[i].toString(16).toUpperCase();
-    if(list[i].length == 1) {
-    list[i] = '0' + list[i];
+function SerialWriteFunc(_num, _r, _g, _b) {
+    var list = [_num, _r, _g, _b];
+    //convert num -> HEX
+    for (var i = 0; i < list.length; i++) {
+        list[i] = list[i].toString(16).toUpperCase();
+        if (list[i].length == 1) {
+            list[i] = '0' + list[i];
+        }
     }
-  }
-  // send sirial signal
-  serialPort.write(':7801'+ list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
-    if(err !== null || results !== undefined) {
-      console.log("err " + err);
-      console.log("results " + results);
-    }
-  });
+    // send sirial signal
+    serialPort.write(':7801' + list[0] + list[1] + list[2] + list[3] + 'X\r\n', function(err, results) { //Write data
+        if (err !== null || results !== undefined) {
+            console.log("err " + err);
+            console.log("results " + results);
+        }
+    });
 }
 // arduino
-var smokeState = false;
-var arduinoFunc = function(){
-  if (smokeState) {
+var arduinoFunc_start = function() {
     SerialWriteFunc(1, 170, 255, 120);
-    // end point
     setTimeout(arduinoFunc_stop, actionTimer * 1000);
-  } else {
-    SerialWriteFunc(0, 170, 255, 120);
-  }
 };
-function arduinoFunc_stop() {
-  smokeState = false;
-  arduinoFunc();
-}
+var arduinoFunc_stop = function () {
+    SerialWriteFunc(0, 170, 255, 120);
+    console.log('終わったバイ');
+};
 //socket.IO
-io.on('connection', function (socket) {
-  socket.emit('start', { massage: 'websocket started!!' });
-  socket.on('send_c_to_s', function (data) {
-    console.log(data);
-    appliName    = data.message.appli;
-    deviceName   = data.message.device;
-    deviceAction = data.message.action;
-    actionTimer  = data.message.time;
-    deviceOption = data.message.option;
-    if (appliName == 'mail') {
-      if(deviceOption == '1ds11176w@gmail.com') {
-        smokeState = true;
-        console.log('true');
-      } else {
-        smokeState = false;
-      }
-    }
+io.on('connection', function(socket) {
+    socket.emit('start', {
+        massage: 'websocket started!!'
+    });
+    socket.on('send_c_to_s', function(data) {
+        console.log(data);
+        appliName = data.message.appli;
+        deviceName = data.message.device;
+        deviceAction = data.message.action;
+        actionTimer = data.message.time;
+        deviceOption = data.message.option;
+        if (appliName == 'mail') {
+            if (deviceOption == '1ds11176w@gmail.com') {
+                arduinoFunc_start();
+            }
+        }
+    });
+    socket.on('rgbInfo', function() {
 
-    arduinoFunc();
-  });
-  socket.on('rgbInfo', function(){
+    });
+    socket.on('fogInfo', function() {
 
-  });
-  socket.on('fogInfo', function(){
+    });
+    socket.on('timeInfo', function() {
 
-  });
-  socket.on('timeInfo', function(){
-
-  });
+    });
 });
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+    var port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -135,27 +126,27 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    var bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -163,9 +154,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    var addr = server.address();
+    var bind = typeof addr === 'string' ?
+        'pipe ' + addr :
+        'port ' + addr.port;
+    debug('Listening on ' + bind);
 }
