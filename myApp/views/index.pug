@@ -1,27 +1,100 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  extends layout
 
+  block content
+    header
+      .btn--menu: img(src="/images/btnMenu@2x.png", alt="", width="30")
+      h1.pageTit: img(src="/images/pageTit@2x.png", alt="noroc", width="72")
+      .btn--add: img(src="/images/btnAdd@2x.png", alt="", width="30")
+    main
+      section
+        h2 Control Devices
+        .deviceList
+          section
+            .device.off
+              h3.device_name device1
+              img.device_pic(src="/images/device_air@2x.png", alt="")
+          section
+            .device.off
+              h3.device_name device2
+              img.device_pic(src="/images/device_record@2x.png", alt="")
+          section
+            .device.off
+              h3.device_name device3
+              img.device_pic(src="/images/device_light@2x.png", alt="")
+          section
+            .device.off
+              h3.device_name device4
+              img.device_pic(src="/images/device_pot@2x.png", alt="")
+          section
+            .device.off
+              h3.device_name device5
+              img.device_pic(src="/images/device_off@2x.png", alt="")
+          section
+            .device.off
+              h3.device_name device6
+              img.device_pic(src="/images/device_off@2x.png", alt="")
+          section
+            .device.off
+              h3.device_name device7
+              img.device_pic(src="/images/device_noroshi@2x.png", alt="")
+  script(src="https://code.jquery.com/jquery-3.1.1.min.js")
   script(src='https://cdn.socket.io/socket.io-1.4.5.js')
   script(src='https://beebotte.com/bbt.js')
   script.
-    //variable
-    var bbt_MSG = "";
-    //socket.io function
-    var socket = io.connect('192.168.0.17:3000');
-    socket.on('start',function(data){
-      console.log(data);
-    });
-    //beebotte function
-    var bbt = new BBT('8e17ef8794a4326c23756af9bec2b9aa');
-    bbt.subscribe({
-      channel: 'ifttt',
-      resource: 'action',
-    }, function(msg){
-      bbt_MSG = msg;
-      console.log(bbt_MSG);
-      final_msg = msg.data;
-      socket.emit('send_c_to_s',{message:final_msg});
+    
+    
+    $(function() {
+      //variable
+      var bbt_MSG = "";
+      var deviceState = false;
+      var device = $('.device');
+      
+      //socket.io function
+      var socket = io.connect('192.168.0.17:3000');
+      socket.on('start',function(data){
+        console.log(data);
+      });
+      //beebotte function
+      var bbt = new BBT('8e17ef8794a4326c23756af9bec2b9aa');
+      bbt.subscribe({
+        channel: 'ifttt',
+        resource: 'action'
+      }, function(msg){
+        bbt_MSG = msg;
+        console.log(bbt_MSG);
+        final_msg = msg.data;
+        socket.emit('send_c_to_s',{message:final_msg});
+      });
+      
+      //click function
+      device.on('click', function() {
+        var clickDevice = $(this);
+        var picName     = clickDevice.find('.device_pic').attr('src');
+        var deviceNum   = device.index(clickDevice) + 1;
+        
+        if (!clickDevice.hasClass('off')) {
+          //onだったらoffにする処理
+          clickDevice.addClass('off');
+          
+          if (picName.match('_on')) {
+            clickDevice.find('.device_pic').attr('src', picName.replace('_on','_off'));
+          } 
+          
+          //socket.IOでOFFの信号を送るやつ
+          socket.emit('send_c_to_s',{message:{"appli": "ローカルアプリ", "device": deviceNum.toString(), "deviceAction": false, "actionTimer": 0, "deviceOption": "nothing"}});
+        } else {
+          //offだったらonにする処理
+          clickDevice.removeClass('off');
+          
+          if (picName.match('_off')) {
+            clickDevice.find('.device_pic').attr('src', picName.replace('_off','_on'));
+          }
+          
+          //socket.IOでONの信号を送るやつ
+          socket.emit('send_c_to_s',{message:{"appli": "ローカルアプリ", "device": deviceNum.toString(), "deviceAction": true, "actionTimer": 0, "deviceOption": "nothing"}});
+        }
+      });
     });

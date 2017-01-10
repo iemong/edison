@@ -1,8 +1,51 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px Helvetica, Arial, sans-serif;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 5%;
+  background-color: #000;
+}
+main {
+
 }
 
-a {
-  color: #00B7FF;
+h2 {
+  text-align: center;
+  font-size: 24px;
+}
+
+.deviceList {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex: 1;
+  margin: 0 5%;
+}
+.deviceList section {
+  width: 160px;
+  height: 160px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+.device {
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+.device_name {
+  margin: 0;
+  padding: 9px 0 14px;
+  font-size: 18px;
+}
+.device_pic {
+  height: 100px;
+}
+.device.off .device_pic {
+  opacity: 0.3;
 }
