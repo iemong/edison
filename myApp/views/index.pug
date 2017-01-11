@@ -81,14 +81,12 @@ block content
           //socket.IOでOFFの信号を送るやつ
           socket.emit('send_c_to_s',
             {message:
-              {"data": 
-                {
-                  "appli": "ローカルアプリ",
-                  "device": deviceNum.toString(),
-                  "action": false,
-                  "time": 0,
-                  "option": "nothing"
-                }
+              {
+                "appli": "ローカルアプリ",
+                "device": deviceNum.toString(),
+                "action": false,
+                "time": 0,
+                "option": "nothing"
               }
             }
           );
@@ -103,14 +101,12 @@ block content
           //socket.IOでONの信号を送るやつ
           socket.emit('send_c_to_s',
             {message:
-              {"data": 
-                {
-                  "appli": "ローカルアプリ",
-                  "device": deviceNum.toString(),
-                  "action": true,
-                  "time": 0,
-                  "option": "nothing"
-                }
+              {
+                "appli": "ローカルアプリ",
+                "device": deviceNum.toString(),
+                "action": true,
+                "time": 0,
+                "option": "nothing"
               }
             }
           );
