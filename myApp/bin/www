@@ -108,7 +108,7 @@ io.on('connection', function(socket) {
         deviceAction = data.message.action;
         actionTimer = data.message.time;
         deviceOption = data.message.option;
-
+        console.log(appliName,deviceName,deviceAction,actionTimer,deviceOption);
         if (appliName == 'mail') {
             if (deviceOption == '1ds11176w@gmail.com') {
                 arduinoFunc(deviceAction);
