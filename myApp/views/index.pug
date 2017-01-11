@@ -1,45 +1,42 @@
 extends layout
 
 block content
-  extends layout
-
-  block content
-    header
-      .btn--menu: img(src="/images/btnMenu@2x.png", alt="", width="30")
-      h1.pageTit: img(src="/images/pageTit@2x.png", alt="noroc", width="72")
-      .btn--add: img(src="/images/btnAdd@2x.png", alt="", width="30")
-    main
-      section
-        h2 Control Devices
-        .deviceList
-          section
-            .device.off
-              h3.device_name device1
-              img.device_pic(src="/images/device_air@2x.png", alt="")
-          section
-            .device.off
-              h3.device_name device2
-              img.device_pic(src="/images/device_record@2x.png", alt="")
-          section
-            .device.off
-              h3.device_name device3
-              img.device_pic(src="/images/device_light@2x.png", alt="")
-          section
-            .device.off
-              h3.device_name device4
-              img.device_pic(src="/images/device_pot@2x.png", alt="")
-          section
-            .device.off
-              h3.device_name device5
-              img.device_pic(src="/images/device_off@2x.png", alt="")
-          section
-            .device.off
-              h3.device_name device6
-              img.device_pic(src="/images/device_off@2x.png", alt="")
-          section
-            .device.off
-              h3.device_name device7
-              img.device_pic(src="/images/device_noroshi@2x.png", alt="")
+  header
+    .btn--menu: img(src="/images/btnMenu@2x.png", alt="", width="30")
+    h1.pageTit: img(src="/images/pageTit@2x.png", alt="noroc", width="72")
+    .btn--add: img(src="/images/btnAdd@2x.png", alt="", width="30")
+  main
+    section
+      h2 Control Devices
+      .deviceList
+        section
+          .device.off
+            h3.device_name device1
+            img.device_pic(src="/images/device_air@2x.png", alt="")
+        section
+          .device.off
+            h3.device_name device2
+            img.device_pic(src="/images/device_record@2x.png", alt="")
+        section
+          .device.off
+            h3.device_name device3
+            img.device_pic(src="/images/device_light@2x.png", alt="")
+        section
+          .device.off
+            h3.device_name device4
+            img.device_pic(src="/images/device_pot@2x.png", alt="")
+        section
+          .device.off
+            h3.device_name device5
+            img.device_pic(src="/images/device_off@2x.png", alt="")
+        section
+          .device.off
+            h3.device_name device6
+            img.device_pic(src="/images/device_off@2x.png", alt="")
+        section
+          .device.off
+            h3.device_name device7
+            img.device_pic(src="/images/device_noroshi@2x.png", alt="")
   script(src="https://code.jquery.com/jquery-3.1.1.min.js")
   script(src='https://cdn.socket.io/socket.io-1.4.5.js')
   script(src='https://beebotte.com/bbt.js')
