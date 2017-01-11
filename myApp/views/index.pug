@@ -41,8 +41,6 @@ block content
   script(src='https://cdn.socket.io/socket.io-1.4.5.js')
   script(src='https://beebotte.com/bbt.js')
   script.
-    
-    
     $(function() {
       //variable
       var bbt_MSG = "";
@@ -50,7 +48,7 @@ block content
       var device = $('.device');
       
       //socket.io function
-      var socket = io.connect('192.168.0.17:3000');
+      var socket = io.connect('10.0.1.12:3000');
       socket.on('start',function(data){
         console.log(data);
       });
@@ -81,7 +79,19 @@ block content
           } 
           
           //socket.IOでOFFの信号を送るやつ
-          socket.emit('send_c_to_s',{message:{"appli": "ローカルアプリ", "device": deviceNum.toString(), "deviceAction": false, "actionTimer": 0, "deviceOption": "nothing"}});
+          socket.emit('send_c_to_s',
+            {message:
+              {"data": 
+                {
+                  "appli": "ローカルアプリ",
+                  "device": deviceNum.toString(),
+                  "action": false,
+                  "time": 0,
+                  "option": "nothing"
+                }
+              }
+            }
+          );
         } else {
           //offだったらonにする処理
           clickDevice.removeClass('off');
@@ -91,7 +101,19 @@ block content
           }
           
           //socket.IOでONの信号を送るやつ
-          socket.emit('send_c_to_s',{message:{"appli": "ローカルアプリ", "device": deviceNum.toString(), "deviceAction": true, "actionTimer": 0, "deviceOption": "nothing"}});
+          socket.emit('send_c_to_s',
+            {message:
+              {"data": 
+                {
+                  "appli": "ローカルアプリ",
+                  "device": deviceNum.toString(),
+                  "action": true,
+                  "time": 0,
+                  "option": "nothing"
+                }
+              }
+            }
+          );
         }
       });
     });
