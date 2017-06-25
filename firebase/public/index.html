@@ -29,36 +29,44 @@
         body { border-top: 16px solid #ffa100; }
       }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDIhSJFxR94drgypYYbGQDLFXJV61pGD1s",
+        authDomain: "test-cbbae.firebaseapp.com",
+        databaseURL: "https://test-cbbae.firebaseio.com",
+        projectId: "test-cbbae",
+        storageBucket: "test-cbbae.appspot.com",
+        messagingSenderId: "746611204311"
+      };
+      firebase.initializeApp(config);
+    </script>
   </head>
   <body>
     <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+      <h1>Firebaseてすと</h1>
+      <p>文字を入れると更新されます</p>
+      <ul>
+        <li id="chatText"></li>
+        <li><input type="text" name="" id="my_text"></li>
+        <li><a onclick="changeData()">更新</a></li>
+      </ul>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+      var db = firebase.database();
+      var myChatAll = db.ref("/my/chat/all");
 
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-        }
+      function changeData(){
+        var text = document.getElementById("my_text").value;
+        myChatAll.set({title:"example", text:text});
+      }
+
+      myChatAll.on("value", function(snapshot) { 
+        document.getElementById("chatText").innerText = snapshot.val().text;
+        console.log(document.getElementById("chatText").innerText);
       });
     </script>
   </body>
